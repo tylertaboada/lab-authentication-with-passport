@@ -32,6 +32,7 @@ After forking and cloning the project, you will have to add a `starter_code/.env
 
 ```
 PORT=3000
+MONGODB_URI=mongodb://127.0.0.1:27017/[YOUR_DATA_BASE_NAME]
 ```
 
 And you have to install all the dependencies:
