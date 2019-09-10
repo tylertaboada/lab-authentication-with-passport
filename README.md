@@ -39,7 +39,6 @@ And you have to install all the dependencies:
 
 
 ```sh
-$ cd starter_code
 $ npm install
 ```
 
