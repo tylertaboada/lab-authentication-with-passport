@@ -13,6 +13,7 @@ Overall, the goal is to understand how authentication and authorization work in 
 - Clone this repo
 
 ## Submission
+
 - Upon completion, run the following commands:
 
 ```bash
@@ -20,6 +21,7 @@ git add .
 git commit -m "done"
 git push origin master
 ```
+
 - Create Pull Request so your TAs can check up your work.
 
 ## Introductions
@@ -37,8 +39,8 @@ MONGODB_URI=mongodb://127.0.0.1:27017/[YOUR_DATA_BASE_NAME]
 
 And you have to install all the dependencies:
 
-
 ```sh
+$ cd starter-code
 $ npm install
 ```
 
@@ -58,7 +60,7 @@ Make sure you install **bcrypt** (or **bcryptjs**) and **passport** npm packages
 
 ## Iteration #2: The Login Feature
 
-In order to add the login feature, let's add one GET route to our router to display the login page. `views/passport/login.hbs` is empty so let's fill it with some login form. Once we have the form, let's add another route to the router to receive that data and log the user in. The form should make a POST request to `/login`. 
+In order to add the login feature, let's add one GET route to our router to display the login page. `views/passport/login.hbs` is empty so let's fill it with some login form. Once we have the form, let's add another route to the router to receive that data and log the user in. The form should make a POST request to `/login`.
 
 **But Wait**
 
@@ -70,4 +72,4 @@ In the repo you forked, there is a file called `private.hbs`. This page is refer
 
 If everything worked correctly, the user should be able to sign up, login, and then visit the page, where they will receive a personalized greeting.
 
-Happy coding! :heart:
+Happy coding! 💙
