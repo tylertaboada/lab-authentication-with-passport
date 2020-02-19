@@ -3,7 +3,6 @@
 const { join } = require('path');
 const express = require('express');
 const createError = require('http-errors');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 const serveFavicon = require('serve-favicon');
@@ -19,13 +18,12 @@ app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(
   sassMiddleware({
     src: join(__dirname, 'public'),
     dest: join(__dirname, 'public'),
-    outputStyle:
-      process.env.NODE_ENV === 'development' ? 'nested' : 'compressed',
+    outputStyle: process.env.NODE_ENV === 'development' ? 'nested' : 'compressed',
+    force: process.env.NODE_ENV === 'development',
     sourceMap: false
   })
 );

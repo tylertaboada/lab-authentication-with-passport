@@ -11,15 +11,11 @@ const passportRouter = Router();
 
 const ensureLogin = require('connect-ensure-login');
 
-passportRouter.get(
-  '/private-page',
-  ensureLogin.ensureLoggedIn(),
-  (req, res, next) => {
-    const user = req.user;
-    res.render('passport/private', {
-      user
-    });
-  }
-);
+passportRouter.get('/private-page', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  const user = req.user;
+  res.render('passport/private', {
+    user
+  });
+});
 
 module.exports = passportRouter;
