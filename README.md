@@ -46,31 +46,54 @@ $ npm install
 
 Now you are ready to start 🚀
 
+## Iteration #0: Configure Passport
+
+To start, you will need to configure your passport strategies, configure the serialization and deserialization process, and mount the passport middleware on your app.
+
+On the `app.js` file, you should mount the `passport.initialize()` and the `passport.session()` middleware, and place it after the `express-session` middleware.
+
+In `configure-passport.js`, for now, you should define a serialization and deserialization process.
+
 ## Iteration #1: The Sign Up Feature
 
 The repo you cloned comes with a `User` model and a `router` file already made for you, in `/routes/index.js`. It also has all the views you need, although some are empty :smile:
 
-Add a new route to your `/routes/passport.js` file with the path `/sign-up` and point it to your `/views/passport/sign-up.hbs` file.
+Add a new route handler to your `/routes/authentication.js` file with the endpoint `/sign-up` and make it render the template in the `/views/authentication/sign-up.hbs` file.
 
-Now, in that _.hbs_ file, add a form that makes a **POST** request to `/sign-up`, with a field for `username` and `password`.
+Now, in that _.hbs_ file, add a form that makes a **POST** request to `/authentication/sign-up`, with a field for `username` and `password`.
 
-Finally, add a **POST** route handler to your `/router/passport.js` to receive the data from the Sign Up form and create a new user with the data.
+Finally, add a **POST** route handler to your `/router/authentication.js` to receive the data from the Sign Up form and create a new user with the data.
 
-Make sure you install `bcrypt` (or `bcryptjs`) and `passport` npm packages and require it in `/router/passport.js`.
+To make everything work, you need to create a `sign-up` authentication strategy on the `configure-passport.js` file. Remember, you configure a strategy in passport by having the following:
+
+```js
+const passport = require('passport');
+const passportLocal = require('passport-local');
+
+const PassportLocalStrategy = passportLocal.Strategy;
+
+passport.use(
+  'sign-up',
+  new PassportLocalStrategy({}, (username, password, callback) => {
+    // Perform your authentication logic and call the callback function,
+    // passing it null in the first parameter and the user document in the second
+  })
+);
+```
+
+Afterwards, you need to pass a call to `passport.authenticate('sign-up', { /* ...options */})` to the route handler for the `sign-up` route.
 
 ## Iteration #2: The Login Feature
 
-In order to allow registered users to login to our platform, we need to add a Sign In feature, by including a **GET** route handler on our `/routes/passport.js` router to display the Sign In page. `/views/passport/sign-in.hbs` is empty, so let's fill it with a Sign In form.
+In order to allow registered users to login to our platform, we need to add a Sign In feature, by including a **GET** route handler on our `/routes/authentication.js` router to display the Sign In page. `/views/authentication/sign-in.hbs` is empty, so let's fill it with a Sign In form.
 
-Once we have the form, let's add another route handler to the router to receive that data and log the user in. The form should make a **POST** request to `/sign-in`.
+Once we have the form, let's add another route handler to the router to receive that data and log the user in. The form should make a **POST** request to `/authentication/sign-in`.
 
-**But Wait**
-
-In order to do that, we need to configure Sessions and initialize a session with passport in our `app.js` file. We also need to add the `passport.serializeUser` methods as well as defining the Passport Local Strategy.
+This feature required you to follow the same process you have followed in the previous iteration, but you should now use an authentication strategy name of `sign-in` and perform the corresponding authentication logic.
 
 ## Private Page
 
-In the repo you forked, there is a file called `/passport/private.hbs`. This page is referenced in the `/router/passport.js` with the path `/private`. We use the `ensureLogin.ensureLoggedIn()` middleware to make sure that the user is logged in before viewing this page.
+In the repo you forked, there is a file called `/authentication/private.hbs`. This view is rendered when the endpoint `/private` is visited. You should use a `route-guard` middleware to make sure that the user is logged in before viewing this page.
 
 If everything worked correctly, the user should be able to Sign Up, Sign In, and then visit the private page, where they will receive a personalized greeting.
 
