@@ -48,7 +48,7 @@ Now you are ready to start 🚀
 
 ## Iteration #0: Configure Passport
 
-To start, you will need to configure your passport strategies, configure the serialization and deserialization process, and mount the passport middleware on your app.
+To start, you will need to install `passport`, `passport-local` and `bcryptjs` from your command line, configure your passport strategies, configure the serialization and deserialization process, and mount the passport middleware on your app.
 
 On the `app.js` file, you should mount the `passport.initialize()` and the `passport.session()` middleware, and place it after the `express-session` middleware.
 
