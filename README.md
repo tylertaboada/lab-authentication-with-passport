@@ -4,9 +4,7 @@
 
 ## Introduction
 
-In previous lessons, we have learned how important it is to have your user managed (saved and retrieved) successfully. In this lab, you will do it one more time, just to make sure we are ready to move forward into new knowledge conquests :wink:
-
-Overall, the goal is to understand how authentication and authorization work in a web applications, why these features are useful and to be able to implement Sign Up and Sign In features using Passport.
+Overall, the goal of this lab is to understand how authentication and authorization work in web applications, why these features are useful and to be able to implement Sign Up and Sign In features using Passport.
 
 ## Requirements
 
@@ -52,7 +50,7 @@ To start, you will need to install `passport`, `passport-local` and `bcryptjs` f
 
 On the `app.js` file, you should mount the `passport.initialize()` and the `passport.session()` middleware, and place it after the `express-session` middleware.
 
-In `configure-passport.js`, for now, you should define a serialization and deserialization process.
+In `configure-passport.js`, for now, you should add a serialization and deserialization process.
 
 ## Iteration #1: The Sign Up Feature
 
@@ -91,10 +89,43 @@ Once we have the form, let's add another route handler to the router to receive 
 
 This feature required you to follow the same process you have followed in the previous iteration, but you should now use an authentication strategy name of `sign-in` and perform the corresponding authentication logic.
 
-## Private Page
+## Iteration #3: Private Page
 
 In the repo you forked, there is a file called `/authentication/private.hbs`. This view is rendered when the endpoint `/private` is visited. You should use a `route-guard` middleware to make sure that the user is logged in before viewing this page.
 
 If everything worked correctly, the user should be able to Sign Up, Sign In, and then visit the private page, where they will receive a personalized greeting.
+
+## Iteration #4: Roles
+
+Let's allow users to have different roles, and limit the actions they can take based on their role.
+
+Start by adding a `role` attribute to your `User` schema. It should take a string, that is one of the following values: _"student"_, _"assistant"_, _"teacher"_. By default, the role of a user should be _"student"_.
+
+Go ahead and sign up for a new user account. This account should now have by default the value _"student"_ in the `role` property.
+
+Create three new templates in your `views` directory: `student.hbs`, `assistant.hbs` and `teacher.hbs`. In each of these, add a greeting message for the specific role.
+
+These templates should be rendered when the user visits the endpoints `/student-dashboard`, `/assistant-dashboard` and `/teacher-dashboard`, but there's a catch: teachers should be able to visit all dashboard routes, teacher assistants should be limited to visiting the `/assistant-dashboard` or `/student-dashboard` routes, while students should only be able to visit the `/student-dashboard` route.
+
+To achieve this, you might want to create some custom middleware that checks for a user's role before letting them through. It might look and be used like what you have in the following example:
+
+```js
+function routeRoleGuard(allowedRoles) {
+  return function(req, res, next) {
+    if (req.user && allowedRoles.includes(req.user.role)) {
+      next();
+    } else {
+      next(new Error('User is not authorized to see that page.'));
+    }
+  };
+}
+
+
+router.get('/admin', routeRoleGuard(['admin', 'boss']), (req, res, next) => {
+  res.render('admin');
+});
+```
+
+Use MongoDB Compass to change a user's role by updating their document to test this functionality.
 
 Happy coding! 💙
